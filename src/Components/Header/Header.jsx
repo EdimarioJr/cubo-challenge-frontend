@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { HeaderStyle, Form } from "./Style";
 import axios from "axios";
 
-const Header = () => {
+const Header = (props) => {
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -20,8 +20,11 @@ const Header = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await axios
-      .post("http://localhost:3000", user)
-      .then((response) => console.log(response));
+      .post(process.env.REACT_APP_API_URL, user)
+      .then((response) =>{
+        props.submit(user)
+        console.log(response)
+        });
   };
 
   return (
