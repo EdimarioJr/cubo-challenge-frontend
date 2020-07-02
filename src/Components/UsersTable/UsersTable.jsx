@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const Table = styled.table`
   border-collapse: collapse;
-
+  height: 80%;
   tr,th,td{
     border: 1px solid #dcdcdc;
     padding: 5px;
