@@ -19,10 +19,26 @@ const Header = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // se todos os valores das propriedades do objeto estiverem preenchidos, ou seja, se o usuário preencheu todos os
+    // campos no form
     if (Object.values(user).every((element) => element !== "")) {
-      await axios.post(process.env.REACT_APP_API_URL, user).then((response) => {
-        props.submit(!props.flagSubmit);
-      });
+      await axios
+        .get(process.env.REACT_APP_API_URL, {
+          params: {
+            first_name: user.first_name,
+            last_name: user.last_name,
+          },
+        })
+        .then(async (response) => {
+          if (response.data.length === 0) {
+            await axios
+              .post(process.env.REACT_APP_API_URL, user)
+              .then((response) => {
+                props.submit(!props.flagSubmit);
+              });
+          } else alert("O usuário já está cadastrado no sistema!");
+        });
+
       setUser({
         first_name: "",
         last_name: "",

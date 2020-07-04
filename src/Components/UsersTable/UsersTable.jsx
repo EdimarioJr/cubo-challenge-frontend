@@ -34,7 +34,7 @@ const UsersTable = (props) => {
     }
     // primeira chamada procura o id desse usuario no banco de dados e a segunda chamada exclui o usuario usando esse id
     await axios
-      .get("http://localhost:3000", {
+      .get(process.env.REACT_APP_API_URL, {
         params: {
           first_name: userName[0],
           last_name: userName[1],
@@ -43,7 +43,7 @@ const UsersTable = (props) => {
       .then(async (response) => {
         if (response.data[0]) {
           await axios
-            .delete(`http://localhost:3000/${response.data[0]._id}`)
+            .delete(`${process.env.REACT_APP_API_URL}/${response.data[0]._id}`)
             .then((response) => {
               props.setFlagDelete(!props.flagDelete);
             });
