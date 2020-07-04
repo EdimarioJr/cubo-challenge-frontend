@@ -19,12 +19,18 @@ const Header = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios
-      .post(process.env.REACT_APP_API_URL, user)
-      .then((response) =>{
-        props.submit(user)
-        console.log(response)
-        });
+    if (Object.values(user).every((element) => element !== "")) {
+      await axios.post(process.env.REACT_APP_API_URL, user).then((response) => {
+        props.submit(!props.flagSubmit);
+      });
+      setUser({
+        first_name: "",
+        last_name: "",
+        participation: "",
+      });
+    } else {
+      alert("Preencha todos os campos!");
+    }
   };
 
   return (

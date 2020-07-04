@@ -8,48 +8,52 @@ import Chart from "react-google-charts";
 
 const Main = styled.section`
   height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-self: center;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   margin-top: 50px;
 `;
 
 function App() {
+  // puxa os usuarios do BD e manda para a tabela e para o gráfico
   const [users, setUsers] = useState([]);
-  const [formSubmit, setFormSubmit] = useState({});
-  const [dataChart,setDataChart] = useState([])
+  const [dataChart, setDataChart] = useState([]);
+  // flags que avisam a esse componente se os componentes filhos fizeram alterações no BD
+  // caso seja true, esse componente é forçado a renderizar novamente, atualizando assim a tabela e gráfico
+  const [formSubmit, setFormSubmit] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(false);
 
   useEffect(() => {
     (async function () {
+      // setando tabela e grafico cada vez que o Header ou UsersTable avisarem que o usuario fez uma alteração
       let newUsers = await axios.get(process.env.REACT_APP_API_URL);
-      console.log(newUsers);
       let newData = newUsers.data.map((user) => {
         const { first_name, last_name, participation } = user;
-        return [
-          `${first_name} ${last_name}`, participation
-        ]
+        return [`${first_name} ${last_name}`, participation];
       });
-      setDataChart(newData)
+      setDataChart(newData);
       setUsers(newUsers.data);
     })();
-  }, [formSubmit]);
+  }, [formSubmit, deleteItem]);
 
   return (
     <>
       <GlobalStyle />
-      <Header submit={setFormSubmit} />
+      <Header submit={setFormSubmit} flagSubmit={formSubmit}/>
       <Container>
         <Main>
-          <UsersTable users={users} />
+          <UsersTable
+            users={users}
+            flagDelete={deleteItem}
+            setFlagDelete={setDeleteItem}
+          />
           <Chart
             width={"600px"}
             height={"450px"}
             chartType="PieChart"
             loader={<div>Loading Chart</div>}
-            data={[
-              ["Users", "participation"],
-              ...dataChart
-            ]}
+            data={[["Users", "participation"], ...dataChart]}
             options={{
               title: "Users participation",
               pieHole: 0.4,
