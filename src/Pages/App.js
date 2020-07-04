@@ -2,18 +2,9 @@ import React, { useState, useEffect } from "react";
 import Header from "../Components/Header/Header";
 import UsersTable from "../Components/UsersTable/UsersTable";
 import { GlobalStyle, Container } from "../globalStyle";
-import styled from "styled-components";
+import { Main } from "./Style";
 import axios from "axios";
 import Chart from "react-google-charts";
-
-const Main = styled.section`
-  height: 100%;
-  display:flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 50px;
-`;
 
 function App() {
   // puxa os usuarios do BD e manda para a tabela e para o gráfico
@@ -40,7 +31,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Header submit={setFormSubmit} flagSubmit={formSubmit}/>
+      <Header submit={setFormSubmit} flagSubmit={formSubmit} />
       <Container>
         <Main>
           <UsersTable

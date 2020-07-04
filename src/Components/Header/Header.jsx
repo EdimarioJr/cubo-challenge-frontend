@@ -22,6 +22,7 @@ const Header = (props) => {
     // se todos os valores das propriedades do objeto estiverem preenchidos, ou seja, se o usuário preencheu todos os
     // campos no form
     if (Object.values(user).every((element) => element !== "")) {
+      // chama o método GET com query params para verificar se o usuário já está cadastrado no BD
       await axios
         .get(process.env.REACT_APP_API_URL, {
           params: {
@@ -30,6 +31,7 @@ const Header = (props) => {
           },
         })
         .then(async (response) => {
+          // caso não exista usuário, a API vai retornar []
           if (response.data.length === 0) {
             await axios
               .post(process.env.REACT_APP_API_URL, user)
